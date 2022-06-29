@@ -1,5 +1,13 @@
 import express from "express";
-import supabaseService from "./supabaseService.js";
+
+import dotenv from 'dotenv'; //dotenv - библиотека для пподключения сторонних сервисов 
+import { createClient } from '@supabase/supabase-js';
+
+dotenv.config();
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const app = express();
 
@@ -14,16 +22,19 @@ app.post("/add", (req, res) => {
 
     console.log("metod: post");
     console.log("url: /add");
-    
+
 
     let model = {
         name: req.body.name,
         description: req.body.description,
     };
+    
+        const { data, error } = await supabase
+            .from('models')
+            .insert(model)
+   
 
-    let data = supabaseService.addModel(model);
-
-    if (!data) {
+    if (!model) {
         let error = {
             status: "error",
             message: "Ошибка при добавлении в базу данных",
