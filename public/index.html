@@ -26,13 +26,10 @@
 
                 <p>
                     <label for="description" class="ZagForma">Описание</label>
-                    <input class="pole" id="description" type="text" name="description" placeholder="Введите описание" required>
+                    <input class="pole" id="description" type="text" name="description" placeholder="Введите описание"
+                        required>
                 </p>
 
-                <!-- <div class="div">
-                    <label for="image" class="ZagForma">Изображение</label>
-                    <input class="pole" id="image" type="file" name="image" accept=".jpg, .png" required>
-                </div> -->
 
                 <p><input style="background-color: #F0E68C;" class="push" type="submit"></p>
 
@@ -47,6 +44,36 @@
     </footer>
 
     <script src="js.js"></script>
+
+    <script>
+
+        let valueForm = document.forms[0];
+
+        valueForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            let formData = new FormData();
+            formData.append("name", e.target.name.value);
+            formData.append("description", e.target.description.value);
+
+
+            fetch("/add", {
+                method: "POST",
+                body: formData,
+            })
+
+                .then((r) => r.json())
+                .then((json) => {
+                    console.table(json);
+                })
+                .catch((error) => alert("Ошибка!"))
+        });
+
+
+
+
+
+    </script>
 
 
 
